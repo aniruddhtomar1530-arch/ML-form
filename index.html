@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breast Cancer Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div>
+                <span class="eyebrow">Machine Learning Demo</span>
+                <h1>Breast Cancer Risk Predictor</h1>
+                <p>Enter 30 tumor features, then submit to see whether the model predicts a benign or malignant result.</p>
+            </div>
+            <button type="button" id="sample-btn" class="secondary">Fill sample values</button>
+        </header>
+
+        <form id="prediction-form" action="/predict" method="post">
+            <div class="grid">
+                {% for i in range(30) %}
+                    <label for="f{{ i }}">Feature {{ i + 1 }}</label>
+                    <input type="number" id="f{{ i }}" name="f{{ i }}" step="any" required />
+                {% endfor %}
+            </div>
+
+            <div class="actions">
+                <button type="reset" class="secondary">Reset</button>
+                <button type="submit" class="primary">Predict</button>
+            </div>
+
+            <div id="status" class="status hidden">Preparing prediction…</div>
+        </form>
+
+        {% if prediction_text %}
+            <section class="result-box {{ 'benign' if 'Benign' in prediction_text else 'malignant' }}">
+                <h2>Prediction</h2>
+                <p>{{ prediction_text }}</p>
+            </section>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
